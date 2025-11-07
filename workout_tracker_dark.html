@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Strength Block Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --accent-primary: #4a9eff;
+            --accent-secondary: #00d9ff;
+            --success: #00e676;
+            --warning: #ffd600;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --card-bg: #18181b;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .nav {
+            display: flex;
+            overflow-x: auto;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 71px;
+            z-index: 99;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav button {
+            flex-shrink: 0;
+            min-width: 85px;
+            padding: 14px 12px;
+            border: none;
+            background: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .nav button.active {
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .content {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 30px;
+        }
+        
+        .week-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .week-btn {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .week-btn.active {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+        
+        .exercise {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .exercise-header {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .exercise-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .sets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .set-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .set-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-width: 45px;
+        }
+        
+        .set-input {
+            flex: 1;
+            padding: 12px 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+        
+        .set-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .set-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+        
+        .set-input.completed {
+            background: rgba(0, 230, 118, 0.1);
+            border-color: var(--success);
+        }
+        
+        .check-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .check-btn.checked {
+            background: var(--success);
+            color: var(--bg-primary);
+            border-color: var(--success);
+        }
+        
+        .notes-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .notes-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .notes-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .notes-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            border-left: 3px solid var(--accent-primary);
+        }
+        
+        .stat-card.success {
+            border-left-color: var(--success);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-value.success {
+            color: var(--success);
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .pr-input-group {
+            margin-bottom: 15px;
+        }
+        
+        .pr-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        
+        .pr-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .pr-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .pr-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        
+        .percentage-display {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        .percentage-display span {
+            flex: 1;
+            text-align: center;
+            padding: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 5px;
+            border: 1px solid var(--border);
+        }
+        
+        .percentage-display strong {
+            color: var(--accent-primary);
+        }
+        
+        .save-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        
+        .save-btn:active {
+            transform: scale(0.98);
+            background: var(--accent-secondary);
+        }
+        
+        .progress-guide {
+            background: rgba(255, 214, 0, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-guide h3 {
+            color: var(--warning);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .progress-guide p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .run-log {
+            background: rgba(0, 230, 118, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .run-log h3 {
+            margin-bottom: 12px;
+            color: var(--success);
+            font-size: 15px;
+        }
+        
+        .run-log-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .run-log-row:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .run-input {
+            width: 70px;
+            padding: 8px;
+            border: 1px solid var(--success);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .run-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .goals-list {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.9;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .goals-list div {
+            padding: 5px 0;
+        }
+        
+        .section-header {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .week-summary {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .week-summary h3 {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .week-stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .week-stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .week-stat-row strong {
+            color: var(--accent-primary);
+        }
+        
+        @media (min-width: 600px) {
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+            
+            .header {
+                border-radius: 20px 20px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Strength Block Tracker</h1>
+            <p>4-Week Pre-Triathlon Power Phase</p>
+        </div>
+        
+        <div class="nav">
+            <button class="nav-btn active" data-page="overview">Overview</button>
+            <button class="nav-btn" data-page="day1">Day 1</button>
+            <button class="nav-btn" data-page="day2">Day 2</button>
+            <button class="nav-btn" data-page="day3">Day 3</button>
+            <button class="nav-btn" data-page="day4">Day 4</button>
+            <button class="nav-btn" data-page="day5">Day 5</button>
+            <button class="nav-btn" data-page="day6">Day 6</button>
+            <button class="nav-btn" data-page="day7">Day 7</button>
+        </div>
+        
+        <div class="content">
+            <!-- Overview Page -->
+            <div id="overview" class="page">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedSessions">0</div>
+                        <div class="stat-label">Sessions Complete</div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-value success" id="totalMiles">0.0</div>
+                        <div class="stat-label">Total Miles</div>
+                    </div>
+                </div>
+                
+                <div class="week-summary">
+                    <h3>Current Week Progress</h3>
+                    <div class="week-stat-row">
+                        <span>Week</span>
+                        <strong id="currentWeekDisplay">1</strong>
+                    </div>
+                    <div class="week-stat-row">
+                        <span>Sessions This Week</span>
+                        <strong id="weekSessions">0 / 6</strong>
+                    </div>
+                    <div class="week-stat-row">
+                        <span>Miles This Week</span>
+                        <strong id="weekMiles">0.0</strong>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 class="section-header">Current PRs</h3>
+                    
+                    <div class="pr-input-group">
+                        <div class="pr-label">Clean 1RM (lbs)</div>
+                        <input type="number" class="pr-input" id="cleanPR" placeholder="Enter your 1RM" inputmode="numeric">
+                        <div class="percentage-display">
+                            <span>65%: <strong id="clean65">-</strong></span>
+                            <span>70%: <strong id="clean70">-</strong></span>
+                            <span>75%: <strong id="clean75">-</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="pr-input-group">
+                        <div class="pr-label">Snatch 1RM (lbs)</div>
+                        <input type="number" class="pr-input" id="snatchPR" placeholder="Enter your 1RM" inputmode="numeric">
+                        <div class="percentage-display">
+                            <span>60%: <strong id="snatch60">-</strong></span>
+                            <span>65%: <strong id="snatch65">-</strong></span>
+                            <span>70%: <strong id="snatch70">-</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="pr-input-group">
+                        <div class="pr-label">Front Squat 1RM (lbs)</div>
+                        <input type="number" class="pr-input" id="frontSquatPR" placeholder="Enter your 1RM" inputmode="numeric">
+                        <div class="percentage-display">
+                            <span>72%: <strong id="fs72">-</strong></span>
+                            <span>80%: <strong id="fs80">-</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="pr-input-group">
+                        <div class="pr-label">Back Squat 1RM (lbs)</div>
+                        <input type="number" class="pr-input" id="backSquatPR" placeholder="Enter your 1RM" inputmode="numeric">
+                        <div class="percentage-display">
+                            <span>78%: <strong id="bs78">-</strong></span>
+                            <span>85%: <strong id="bs85">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h3 class="section-header">Phase Goals</h3>
+                    <div class="goals-list">
+                        <div>Build leg strength and power</div>
+                        <div>Improve Olympic lift technique (65-75%)</div>
+                        <div>Develop medial and rear delts</div>
+                        <div>Maintain 10+ miles per week running</div>
+                        <div>Keep conditioning base without overtraining</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Day Pages (dynamically rendered) -->
+            <div id="day1" class="page hidden"></div>
+            <div id="day2" class="page hidden"></div>
+            <div id="day3" class="page hidden"></div>
+            <div id="day4" class="page hidden"></div>
+            <div id="day5" class="page hidden"></div>
+            <div id="day6" class="page hidden"></div>
+            <div id="day7" class="page hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data structure
+        const workoutData = {
+            day1: {
+                name: 'Clean Technique + Upper Push',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Hip/T-spine, ankle, scap' },
+                    { name: 'A. Clean Complex', sets: 5, reps: '1+1+1', notes: 'Hang clean + Front squat + Jerk dip @ 65-75%' },
+                    { name: 'B1. Front Squat', sets: 4, reps: '4', notes: '@ 72-80%' },
+                    { name: 'B2. Pull-ups', sets: 4, reps: '6-8', notes: 'Add weight if easy' },
+                    { name: 'C. Bulgarian Split Squat', sets: 3, reps: '8/leg', notes: 'DB or barbell' },
+                    { name: 'D. Barbell Bench', sets: 3, reps: '6-8', notes: '@ RPE 7-8' },
+                    { name: 'E1. DB Laterals', sets: 2, reps: '15', notes: 'Medial delt' },
+                    { name: 'E2. Face Pulls', sets: 2, reps: '15', notes: 'Rear delt' },
+                    { name: 'Finisher', sets: 1, reps: '8-10 min', notes: 'Assault bike 30/30 x 8-10' }
+                ]
+            },
+            day2: {
+                name: 'Upper Hypertrophy + Aerobic',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Band series, scap' },
+                    { name: 'A. Landmine Press', sets: 4, reps: '8/side', notes: 'Anti-rotation' },
+                    { name: 'B. Chest-Supported Row', sets: 4, reps: '10', notes: 'Elbows 45-60 degrees' },
+                    { name: 'C. DB Incline Press', sets: 3, reps: '10', notes: '2-sec eccentric' },
+                    { name: 'D1. Face Pulls', sets: 3, reps: '12', notes: 'Giant set' },
+                    { name: 'D2. Reverse Fly', sets: 3, reps: '12', notes: 'Light weight' },
+                    { name: 'D3. Lean-away Laterals', sets: 3, reps: '10/side', notes: 'Hold pole' },
+                    { name: 'E. Z2 Aerobic', sets: 1, reps: '20-25 min', notes: 'Row or bike' }
+                ]
+            },
+            day3: {
+                name: 'Snatch Technique + Posterior',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Overhead PVC, drop snatches' },
+                    { name: 'A. Snatch Complex', sets: 6, reps: '1+1+1', notes: 'Pull + Hang power snatch + OHS @ 60-70%' },
+                    { name: 'B. RDL', sets: 4, reps: '6-8', notes: '@ RPE 7-8' },
+                    { name: 'C. Belt Squat', sets: 4, reps: '8', notes: 'Tempo 3-sec Wk2-3' },
+                    { name: 'D1. Sandbag March', sets: 3, reps: ':30', notes: 'Front-rack' },
+                    { name: 'D2. Ring Fallouts', sets: 3, reps: '10', notes: 'Core' },
+                    { name: 'Finisher (optional)', sets: 1, reps: '5 rounds', notes: '250m row @ 5k pace' }
+                ]
+            },
+            day4: {
+                name: 'KB/Sandbag GPP + Delts',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Light swings, hip work' },
+                    { name: 'A. KB Complex', sets: 5, reps: '6+6+6', notes: 'Swings + cleans + squats' },
+                    { name: 'B. Sandbag Bear Squats', sets: 4, reps: '12', notes: 'Pump, not grinding' },
+                    { name: 'C1. TRX T-Y-I', sets: 3, reps: '10 each', notes: 'Rear delt' },
+                    { name: 'C2. DB Laterals', sets: 3, reps: '12', notes: 'Medial delt' },
+                    { name: 'D. Z2 Flush', sets: 1, reps: '12-20 min', notes: 'Bike or 2-mi jog' }
+                ]
+            },
+            day5: {
+                name: 'Lower Strength + OH Press',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Ankles, adductors, glutes' },
+                    { name: 'A. Back Squat', sets: 5, reps: '3', notes: '@ 78-85%' },
+                    { name: 'B. Strict OH Press', sets: 4, reps: '5', notes: '@ RPE 8' },
+                    { name: 'C. Romanian Split Squat', sets: 3, reps: '8/leg', notes: 'Back foot elevated' },
+                    { name: 'D. Walking Lunges', sets: 3, reps: '12/leg', notes: 'Control and balance' },
+                    { name: 'E. Weighted Dips', sets: 4, reps: '6-8', notes: '@ RPE 8' },
+                    { name: 'F. Face Pulls', sets: 2, reps: '20', notes: 'Rear delt' }
+                ]
+            },
+            day6: {
+                name: 'Run/Bike Intervals + Skill',
+                exercises: [
+                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Easy jog/spin' },
+                    { name: 'A. Intervals', sets: 1, reps: '30-40 min', notes: 'RUN: 10x1min on/off OR BIKE: 12x40s/80s' },
+                    { name: 'B. Barbell Skill EMOM', sets: 12, reps: '2 reps', notes: 'Cleans, jerks, snatch pulls @ 60%' },
+                    { name: 'C1. Cable Laterals', sets: 4, reps: '15', notes: 'Medial delt' },
+                    { name: 'C2. Band Pull-aparts', sets: 3, reps: '20', notes: 'Rear delt' }
+                ]
+            },
+            day7: {
+                name: 'Easy Run or Recovery',
+                exercises: [
+                    { name: 'Option A: Easy Z2 Run', sets: 1, reps: '30-40 min', notes: '3-4 miles' },
+                    { name: 'Option B: Easy Swim', sets: 1, reps: '20-30 min', notes: 'Continuous' },
+                    { name: 'Option C: Bike Z2', sets: 1, reps: '45-60 min', notes: 'Easy' },
+                    { name: 'Mobility (always)', sets: 1, reps: '10-15 min', notes: 'Hips, ankles, T-spine' },
+                    { name: 'Easy Core', sets: 1, reps: '10 min', notes: 'Dead bug, planks' }
+                ]
+            }
+        };
+
+        const progressionGuides = {
+            1: 'TECHNIQUE & BASE: Oly 65-70%, squats 72-78%. Focus bar speed. RPE 6-7 accessories. Film lifts.',
+            2: 'BUILD: Add 2-5% to main lifts. Oly 70-75%. Belt squat TEMPO (3-sec down).',
+            3: 'POWER: Drop load 5% but increase bar speed. Clusters on Oly (2+2 w/ 15s rest). Intervals 45/45.',
+            4: 'DELOAD: -20-30% volume. Light Oly technique only (65%). Z2 emphasis. No heavy eccentrics.',
+            5: 'OPTIONAL: Repeat Week 2 with +5% OR transition to more swim/bike.',
+            6: 'OPTIONAL: Repeat Week 3 OR start 70.3 base with 2-3 strength sessions.'
+        };
+
+        // Initialize storage
+        let userData = JSON.parse(localStorage.getItem('workoutTracker')) || {
+            prs: {},
+            workouts: {},
+            runLog: {},
+            currentWeek: 1
+        };
+
+        // Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = btn.dataset.page;
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+                document.getElementById(page).classList.remove('hidden');
+                
+                if (page === 'overview') {
+                    updateStats();
+                } else {
+                    renderWorkoutPage(page);
+                }
+            });
+        });
+
+        // PR calculations
+        ['clean', 'snatch', 'frontSquat', 'backSquat'].forEach(lift => {
+            const input = document.getElementById(`${lift}PR`);
+            if (input) {
+                input.addEventListener('input', () => {
+                    const value = parseFloat(input.value);
+                    if (value) {
+                        userData.prs[lift] = value;
+                        saveData();
+                        updatePercentages(lift, value);
+                    }
+                });
+                
+                if (userData.prs[lift]) {
+                    input.value = userData.prs[lift];
+                    updatePercentages(lift, userData.prs[lift]);
+                }
+            }
+        });
+
+        function updatePercentages(lift, value) {
+            const percentages = {
+                clean: [65, 70, 75],
+                snatch: [60, 65, 70],
+                frontSquat: [72, 80],
+                backSquat: [78, 85]
+            };
+            
+            percentages[lift].forEach(pct => {
+                const elem = document.getElementById(`${lift === 'frontSquat' ? 'fs' : lift === 'backSquat' ? 'bs' : lift}${pct}`);
+                if (elem) {
+                    elem.textContent = Math.round(value * pct / 100);
+                }
+            });
+        }
+
+        function renderWorkoutPage(day) {
+            const page = document.getElementById(day);
+            page.innerHTML = '';
+            
+            // Week selector
+            const weekSelector = document.createElement('div');
+            weekSelector.className = 'week-selector';
+            for (let w = 1; w <= 6; w++) {
+                const btn = document.createElement('button');
+                btn.className = `week-btn ${w === userData.currentWeek ? 'active' : ''}`;
+                btn.textContent = `Week ${w}`;
+                btn.onclick = () => {
+                    userData.currentWeek = w;
+                    saveData();
+                    renderWorkoutPage(day);
+                    updateStats();
+                };
+                weekSelector.appendChild(btn);
+            }
+            page.appendChild(weekSelector);
+            
+            const content = document.createElement('div');
+            
+            // Progression guide
+            const guideDiv = document.createElement('div');
+            guideDiv.className = 'progress-guide';
+            guideDiv.innerHTML = `
+                <h3>Week ${userData.currentWeek} Guide</h3>
+                <p>${progressionGuides[userData.currentWeek]}</p>
+            `;
+            content.appendChild(guideDiv);
+            
+            // Exercises
+            const workout = workoutData[day];
+            if (!userData.workouts[day]) userData.workouts[day] = {};
+            if (!userData.workouts[day][userData.currentWeek]) {
+                userData.workouts[day][userData.currentWeek] = { sets: {}, notes: '', feel: '' };
+            }
+            
+            const weekData = userData.workouts[day][userData.currentWeek];
+            
+            workout.exercises.forEach((ex, idx) => {
+                const exerciseDiv = document.createElement('div');
+                exerciseDiv.className = 'exercise';
+                
+                let setsHTML = '';
+                for (let s = 1; s <= ex.sets; s++) {
+                    const key = `${idx}-${s}`;
+                    const value = weekData.sets[key] || '';
+                    const checked = value ? 'checked' : '';
+                    const completedClass = value ? 'completed' : '';
+                    
+                    setsHTML += `
+                        <div class="set-row">
+                            <div class="set-label">Set ${s}</div>
+                            <input type="text" 
+                                   class="set-input ${completedClass}" 
+                                   placeholder="185x5"
+                                   data-key="${key}"
+                                   value="${value}"
+                                   inputmode="text">
+                            <div class="check-btn ${checked}" data-key="${key}">✓</div>
+                        </div>
+                    `;
+                }
+                
+                exerciseDiv.innerHTML = `
+                    <div class="exercise-header">${ex.name}</div>
+                    <div class="exercise-meta">${ex.sets > 1 ? ex.sets + 'x' : ''}${ex.reps} - ${ex.notes}</div>
+                    <div class="sets-container">${setsHTML}</div>
+                `;
+                
+                content.appendChild(exerciseDiv);
+            });
+            
+            // Notes section
+            const notesDiv = document.createElement('div');
+            notesDiv.className = 'notes-section';
+            notesDiv.innerHTML = `
+                <div class="notes-label">Session Notes & Feel (1-10)</div>
+                <textarea class="notes-input" id="${day}-notes" placeholder="How did it feel? Any PRs? Technique notes?">${weekData.notes || ''}</textarea>
+                <input type="number" class="pr-input" id="${day}-feel" min="1" max="10" placeholder="Feel Rating (1-10)" value="${weekData.feel || ''}" style="margin-top: 10px;" inputmode="numeric">
+            `;
+            content.appendChild(notesDiv);
+            
+            // Run log for Day 6 and 7
+            if (day === 'day6' || day === 'day7') {
+                if (!userData.runLog[userData.currentWeek]) {
+                    userData.runLog[userData.currentWeek] = { day6: '', day7: '', day4: '' };
+                }
+                
+                const runDiv = document.createElement('div');
+                runDiv.className = 'run-log';
+                runDiv.innerHTML = `
+                    <h3>Weekly Run Log</h3>
+                    <div class="run-log-row">
+                        <span>Day 6 (4-5 mi):</span>
+                        <input type="number" class="run-input" id="run-day6" step="0.1" value="${userData.runLog[userData.currentWeek].day6 || ''}" placeholder="0.0" inputmode="decimal">
+                    </div>
+                    <div class="run-log-row">
+                        <span>Day 7 (3-4 mi):</span>
+                        <input type="number" class="run-input" id="run-day7" step="0.1" value="${userData.runLog[userData.currentWeek].day7 || ''}" placeholder="0.0" inputmode="decimal">
+                    </div>
+                    <div class="run-log-row">
+                        <span>Day 4 optional (2 mi):</span>
+                        <input type="number" class="run-input" id="run-day4" step="0.1" value="${userData.runLog[userData.currentWeek].day4 || ''}" placeholder="0.0" inputmode="decimal">
+                    </div>
+                    <div class="run-log-row">
+                        <span>Total Miles:</span>
+                        <strong id="total-miles">0.0</strong>
+                    </div>
+                `;
+                content.appendChild(runDiv);
+                
+                // Run log listeners
+                setTimeout(() => {
+                    ['day6', 'day7', 'day4'].forEach(d => {
+                        const input = document.getElementById(`run-${d}`);
+                        if (input) {
+                            input.addEventListener('input', () => {
+                                userData.runLog[userData.currentWeek][d] = input.value;
+                                updateTotalMiles();
+                                saveData();
+                                updateStats();
+                            });
+                        }
+                    });
+                    updateTotalMiles();
+                }, 0);
+            }
+            
+            // Save button
+            const saveBtn = document.createElement('button');
+            saveBtn.className = 'save-btn';
+            saveBtn.textContent = 'Save Workout';
+            saveBtn.onclick = () => saveWorkout(day);
+            content.appendChild(saveBtn);
+            
+            page.appendChild(content);
+            
+            // Add event listeners
+            setTimeout(() => {
+                page.querySelectorAll('.set-input').forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const key = e.target.dataset.key;
+                        weekData.sets[key] = e.target.value;
+                        if (e.target.value) {
+                            e.target.classList.add('completed');
+                            const checkBtn = page.querySelector(`.check-btn[data-key="${key}"]`);
+                            if (checkBtn) checkBtn.classList.add('checked');
+                        } else {
+                            e.target.classList.remove('completed');
+                            const checkBtn = page.querySelector(`.check-btn[data-key="${key}"]`);
+                            if (checkBtn) checkBtn.classList.remove('checked');
+                        }
+                        saveData();
+                        updateStats();
+                    });
+                });
+                
+                page.querySelectorAll('.check-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const key = btn.dataset.key;
+                        const input = page.querySelector(`.set-input[data-key="${key}"]`);
+                        if (input.value) {
+                            btn.classList.toggle('checked');
+                            input.classList.toggle('completed');
+                        }
+                    });
+                });
+            }, 0);
+        }
+
+        function updateTotalMiles() {
+            const week = userData.runLog[userData.currentWeek] || { day6: 0, day7: 0, day4: 0 };
+            const total = (parseFloat(week.day6) || 0) + (parseFloat(week.day7) || 0) + (parseFloat(week.day4) || 0);
+            const elem = document.getElementById('total-miles');
+            if (elem) {
+                elem.textContent = total.toFixed(1);
+            }
+        }
+
+        function saveWorkout(day) {
+            const weekData = userData.workouts[day][userData.currentWeek];
+            const notesInput = document.getElementById(`${day}-notes`);
+            const feelInput = document.getElementById(`${day}-feel`);
+            
+            if (notesInput) weekData.notes = notesInput.value;
+            if (feelInput) weekData.feel = feelInput.value;
+            
+            saveData();
+            updateStats();
+            
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Saved!';
+            btn.style.background = 'var(--success)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'var(--accent-primary)';
+            }, 1500);
+        }
+
+        function saveData() {
+            localStorage.setItem('workoutTracker', JSON.stringify(userData));
+        }
+
+        function updateStats() {
+            // Calculate total sessions
+            let totalSessions = 0;
+            let weekSessions = 0;
+            
+            Object.keys(userData.workouts).forEach(day => {
+                Object.keys(userData.workouts[day]).forEach(week => {
+                    const weekData = userData.workouts[day][week];
+                    const hasData = Object.keys(weekData.sets).some(key => weekData.sets[key]);
+                    if (hasData) {
+                        totalSessions++;
+                        if (parseInt(week) === userData.currentWeek) {
+                            weekSessions++;
+                        }
+                    }
+                });
+            });
+            
+            // Calculate total miles
+            let totalMiles = 0;
+            let weekMiles = 0;
+            
+            Object.keys(userData.runLog).forEach(week => {
+                const weekData = userData.runLog[week];
+                const miles = (parseFloat(weekData.day6) || 0) + (parseFloat(weekData.day7) || 0) + (parseFloat(weekData.day4) || 0);
+                totalMiles += miles;
+                if (parseInt(week) === userData.currentWeek) {
+                    weekMiles = miles;
+                }
+            });
+            
+            // Update display
+            document.getElementById('completedSessions').textContent = totalSessions;
+            document.getElementById('totalMiles').textContent = totalMiles.toFixed(1);
+            document.getElementById('currentWeekDisplay').textContent = userData.currentWeek;
+            document.getElementById('weekSessions').textContent = `${weekSessions} / 6`;
+            document.getElementById('weekMiles').textContent = weekMiles.toFixed(1);
+        }
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>
