@@ -29,6 +29,8 @@
             --text-muted: #71717a;
             --border: #27272a;
             --card-bg: #18181b;
+            --purple: #a78bfa;
+            --orange: #fb923c;
         }
         
         body {
@@ -142,12 +144,39 @@
             border-color: var(--accent-primary);
         }
         
+        .warmup-section {
+            background: rgba(251, 146, 60, 0.1);
+            border-left: 3px solid var(--orange);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .warmup-header {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--orange);
+            margin-bottom: 8px;
+        }
+        
+        .warmup-item {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 4px;
+            padding-left: 12px;
+            line-height: 1.5;
+        }
+        
         .exercise {
             background: var(--card-bg);
             border-radius: 12px;
             padding: 14px;
             margin-bottom: 12px;
             border-left: 3px solid var(--accent-primary);
+        }
+        
+        .exercise.core {
+            border-left-color: var(--warning);
         }
         
         .exercise-header {
@@ -161,6 +190,35 @@
             font-size: 12px;
             color: var(--text-muted);
             margin-bottom: 10px;
+        }
+        
+        .previous-workout {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid var(--purple);
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .previous-workout-header {
+            color: var(--purple);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .previous-sets {
+            color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .previous-sets span {
+            background: var(--bg-tertiary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
         }
         
         .sets-container {
@@ -230,6 +288,121 @@
             border-color: var(--success);
         }
         
+        .burpee-section {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.15), rgba(255, 100, 0, 0.15));
+            border: 2px solid #ff6b6b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .burpee-header {
+            font-weight: 700;
+            font-size: 16px;
+            color: #ff6b6b;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .burpee-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .burpee-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .burpee-checkbox input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        
+        .burpee-checkbox label {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .burpee-time {
+            flex: 1;
+        }
+        
+        .burpee-time-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .burpee-time-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .burpee-time-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+        
+        .cardio-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--success);
+        }
+        
+        .cardio-header {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+        
+        .cardio-description {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 12px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        
+        .cardio-input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .cardio-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            min-width: 90px;
+        }
+        
+        .cardio-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .cardio-input:focus {
+            outline: none;
+            border-color: var(--success);
+        }
+        
         .notes-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -284,6 +457,10 @@
             border-left-color: var(--success);
         }
         
+        .stat-card.burpee {
+            border-left-color: #ff6b6b;
+        }
+        
         .stat-value {
             font-size: 32px;
             font-weight: 700;
@@ -293,6 +470,10 @@
         
         .stat-value.success {
             color: var(--success);
+        }
+        
+        .stat-value.burpee {
+            color: #ff6b6b;
         }
         
         .stat-label {
@@ -392,53 +573,6 @@
             line-height: 1.5;
         }
         
-        .run-log {
-            background: rgba(0, 230, 118, 0.1);
-            border-left: 3px solid var(--success);
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .run-log h3 {
-            margin-bottom: 12px;
-            color: var(--success);
-            font-size: 15px;
-        }
-        
-        .run-log-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        
-        .run-log-row:last-child {
-            margin-bottom: 0;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        
-        .run-input {
-            width: 70px;
-            padding: 8px;
-            border: 1px solid var(--success);
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border-radius: 6px;
-            text-align: center;
-            font-size: 14px;
-        }
-        
-        .run-input:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-        }
-        
         .hidden {
             display: none;
         }
@@ -535,8 +669,16 @@
                         <div class="stat-label">Sessions Complete</div>
                     </div>
                     <div class="stat-card success">
-                        <div class="stat-value success" id="totalMiles">0.0</div>
-                        <div class="stat-label">Total Miles</div>
+                        <div class="stat-value success" id="totalCardio">0.0</div>
+                        <div class="stat-label">Total Cardio</div>
+                    </div>
+                    <div class="stat-card burpee">
+                        <div class="stat-value burpee" id="burpeeStreak">0</div>
+                        <div class="stat-label">Burpee Streak</div>
+                    </div>
+                    <div class="stat-card burpee">
+                        <div class="stat-value burpee" id="totalBurpees">0</div>
+                        <div class="stat-label">Total Burpees</div>
                     </div>
                 </div>
                 
@@ -551,8 +693,12 @@
                         <strong id="weekSessions">0 / 6</strong>
                     </div>
                     <div class="week-stat-row">
-                        <span>Miles This Week</span>
-                        <strong id="weekMiles">0.0</strong>
+                        <span>Cardio This Week</span>
+                        <strong id="weekCardio">0.0</strong>
+                    </div>
+                    <div class="week-stat-row">
+                        <span>Burpees This Week</span>
+                        <strong id="weekBurpees">0 / 7</strong>
                     </div>
                 </div>
                 
@@ -605,7 +751,7 @@
                         <div>Improve Olympic lift technique (65-75%)</div>
                         <div>Develop medial and rear delts</div>
                         <div>Maintain 10+ miles per week running</div>
-                        <div>Keep conditioning base without overtraining</div>
+                        <div>100 burpees daily challenge</div>
                     </div>
                 </div>
             </div>
@@ -626,8 +772,16 @@
         const workoutData = {
             day1: {
                 name: 'Clean Technique + Upper Push',
+                warmup: [
+                    '3-5 min easy cardio (row/bike/jog)',
+                    'Hip 90/90 stretches - 5 each side',
+                    'World\'s greatest stretch - 3 each side',
+                    'Ankle rocks - 10 each',
+                    'Scap push-ups - 10 reps',
+                    'Band pull-aparts - 15 reps',
+                    'Empty barbell: 5 hang muscle cleans, 5 front squats, 5 press'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Hip/T-spine, ankle, scap' },
                     { name: 'A. Clean Complex', sets: 5, reps: '1+1+1', notes: 'Hang clean + Front squat + Jerk dip @ 65-75%' },
                     { name: 'B1. Front Squat', sets: 4, reps: '4', notes: '@ 72-80%' },
                     { name: 'B2. Pull-ups', sets: 4, reps: '6-8', notes: 'Add weight if easy' },
@@ -635,76 +789,157 @@
                     { name: 'D. Barbell Bench', sets: 3, reps: '6-8', notes: '@ RPE 7-8' },
                     { name: 'E1. DB Laterals', sets: 2, reps: '15', notes: 'Medial delt' },
                     { name: 'E2. Face Pulls', sets: 2, reps: '15', notes: 'Rear delt' },
-                    { name: 'Finisher', sets: 1, reps: '8-10 min', notes: 'Assault bike 30/30 x 8-10' }
-                ]
+                    { name: 'Core: Plank Series', sets: 3, reps: 'combo', notes: '30s front plank, 20s each side plank', core: true }
+                ],
+                cardio: {
+                    description: 'Finisher: Assault bike 30s on / 30s off × 8-10 rounds @ RPE 7',
+                    inputs: [
+                        { label: 'Bike (min)', key: 'bike' }
+                    ]
+                }
             },
             day2: {
                 name: 'Upper Hypertrophy + Aerobic',
+                warmup: [
+                    '5 min easy row or bike',
+                    'Band pull-aparts - 20 reps',
+                    'Band dislocations - 10 reps',
+                    'Scap push-ups - 12 reps',
+                    'Ring rows - 10 reps',
+                    'Arm circles - 10 forward, 10 back',
+                    'Light DB press - 10 reps'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Band series, scap' },
                     { name: 'A. Landmine Press', sets: 4, reps: '8/side', notes: 'Anti-rotation' },
                     { name: 'B. Chest-Supported Row', sets: 4, reps: '10', notes: 'Elbows 45-60 degrees' },
                     { name: 'C. DB Incline Press', sets: 3, reps: '10', notes: '2-sec eccentric' },
                     { name: 'D1. Face Pulls', sets: 3, reps: '12', notes: 'Giant set' },
                     { name: 'D2. Reverse Fly', sets: 3, reps: '12', notes: 'Light weight' },
-                    { name: 'D3. Lean-away Laterals', sets: 3, reps: '10/side', notes: 'Hold pole' },
-                    { name: 'E. Z2 Aerobic', sets: 1, reps: '20-25 min', notes: 'Row or bike' }
-                ]
+                    { name: 'D3. Lean-away Laterals', sets: 3, reps: '10/side', notes: 'Hold pole' }
+                ],
+                cardio: {
+                    description: 'Easy Z2 aerobic: 20-25 min row or bike at conversational pace (nose breathing)',
+                    inputs: [
+                        { label: 'Row (min)', key: 'row' },
+                        { label: 'Bike (min)', key: 'bike' }
+                    ]
+                }
             },
             day3: {
                 name: 'Snatch Technique + Posterior',
+                warmup: [
+                    '3-5 min easy cardio',
+                    'PVC overhead squats - 10 reps',
+                    'PVC snatch balance - 8 reps',
+                    'Drop snatches - 6 reps',
+                    'Ankle mobility rocks - 10 each',
+                    'Hip flexor stretches - 30s each',
+                    'Empty bar: 5 snatch pulls, 5 hang snatches'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Overhead PVC, drop snatches' },
                     { name: 'A. Snatch Complex', sets: 6, reps: '1+1+1', notes: 'Pull + Hang power snatch + OHS @ 60-70%' },
                     { name: 'B. RDL', sets: 4, reps: '6-8', notes: '@ RPE 7-8' },
                     { name: 'C. Belt Squat', sets: 4, reps: '8', notes: 'Tempo 3-sec Wk2-3' },
                     { name: 'D1. Sandbag March', sets: 3, reps: ':30', notes: 'Front-rack' },
                     { name: 'D2. Ring Fallouts', sets: 3, reps: '10', notes: 'Core' },
-                    { name: 'Finisher (optional)', sets: 1, reps: '5 rounds', notes: '250m row @ 5k pace' }
-                ]
+                    { name: 'Core: Dead Bug', sets: 3, reps: '12/side', notes: 'Slow and controlled', core: true }
+                ],
+                cardio: {
+                    description: 'Optional finisher: 5 rounds of 250m row @ 5k pace, 60s easy between rounds',
+                    inputs: [
+                        { label: 'Row (meters)', key: 'row' }
+                    ]
+                }
             },
             day4: {
                 name: 'KB/Sandbag GPP + Delts',
+                warmup: [
+                    'Light KB swings - 15 reps',
+                    'Hip airplanes - 5 each side',
+                    'Cossack squats - 5 each side',
+                    'KB halos - 5 each direction',
+                    'Goblet squat hold - 30s',
+                    'Shoulder CARs - 5 each direction'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Light swings, hip work' },
                     { name: 'A. KB Complex', sets: 5, reps: '6+6+6', notes: 'Swings + cleans + squats' },
                     { name: 'B. Sandbag Bear Squats', sets: 4, reps: '12', notes: 'Pump, not grinding' },
                     { name: 'C1. TRX T-Y-I', sets: 3, reps: '10 each', notes: 'Rear delt' },
                     { name: 'C2. DB Laterals', sets: 3, reps: '12', notes: 'Medial delt' },
-                    { name: 'D. Z2 Flush', sets: 1, reps: '12-20 min', notes: 'Bike or 2-mi jog' }
-                ]
+                    { name: 'Core: Hollow Holds', sets: 3, reps: '20-30s', notes: 'Lower back pressed down', core: true }
+                ],
+                cardio: {
+                    description: 'Z2 flush: 12-20 min easy bike OR 2-mile recovery jog (only if legs feel good)',
+                    inputs: [
+                        { label: 'Run (miles)', key: 'run' },
+                        { label: 'Bike (min)', key: 'bike' }
+                    ]
+                }
             },
             day5: {
                 name: 'Lower Strength + OH Press',
+                warmup: [
+                    '5 min easy bike or row',
+                    'Adductor rocks - 8 each side',
+                    'Glute bridges - 15 reps',
+                    'Goblet squats - 10 reps',
+                    'Ankle mobility - 10 each',
+                    'Empty bar squats - 10 reps',
+                    'Build up: 40%, 60%, 70% x 3 reps each'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Ankles, adductors, glutes' },
                     { name: 'A. Back Squat', sets: 5, reps: '3', notes: '@ 78-85%' },
                     { name: 'B. Strict OH Press', sets: 4, reps: '5', notes: '@ RPE 8' },
                     { name: 'C. Romanian Split Squat', sets: 3, reps: '8/leg', notes: 'Back foot elevated' },
                     { name: 'D. Walking Lunges', sets: 3, reps: '12/leg', notes: 'Control and balance' },
                     { name: 'E. Weighted Dips', sets: 4, reps: '6-8', notes: '@ RPE 8' },
-                    { name: 'F. Face Pulls', sets: 2, reps: '20', notes: 'Rear delt' }
-                ]
+                    { name: 'F. Face Pulls', sets: 2, reps: '20', notes: 'Rear delt' },
+                    { name: 'Core: Pallof Press', sets: 3, reps: '10/side', notes: 'Anti-rotation', core: true }
+                ],
+                cardio: null
             },
             day6: {
                 name: 'Run/Bike Intervals + Skill',
+                warmup: [
+                    '10 min easy run or bike (build gradually)',
+                    'Leg swings - 10 forward/back, 10 side/side',
+                    'High knees - 20 steps',
+                    'Butt kicks - 20 steps',
+                    'A-skips - 20 steps',
+                    'Build-up runs - 3x50m @ 70-80-90%'
+                ],
                 exercises: [
-                    { name: 'Warm-up', sets: 1, reps: '8-10 min', notes: 'Easy jog/spin' },
-                    { name: 'A. Intervals', sets: 1, reps: '30-40 min', notes: 'RUN: 10x1min on/off OR BIKE: 12x40s/80s' },
                     { name: 'B. Barbell Skill EMOM', sets: 12, reps: '2 reps', notes: 'Cleans, jerks, snatch pulls @ 60%' },
                     { name: 'C1. Cable Laterals', sets: 4, reps: '15', notes: 'Medial delt' },
                     { name: 'C2. Band Pull-aparts', sets: 3, reps: '20', notes: 'Rear delt' }
-                ]
+                ],
+                cardio: {
+                    description: 'Main workout: RUNNING: 10×1 min on / 1 min off @ 5k effort (jog recovery) OR BIKE: 12×40s hard / 80s easy @ RPE 8',
+                    inputs: [
+                        { label: 'Run (miles)', key: 'run' },
+                        { label: 'Bike (min)', key: 'bike' }
+                    ]
+                }
             },
             day7: {
                 name: 'Easy Run or Recovery',
+                warmup: [
+                    'Start very easy - first 5 min below conversation pace',
+                    'Gradually build to steady Z2',
+                    'Focus on nasal breathing'
+                ],
                 exercises: [
-                    { name: 'Option A: Easy Z2 Run', sets: 1, reps: '30-40 min', notes: '3-4 miles' },
-                    { name: 'Option B: Easy Swim', sets: 1, reps: '20-30 min', notes: 'Continuous' },
-                    { name: 'Option C: Bike Z2', sets: 1, reps: '45-60 min', notes: 'Easy' },
-                    { name: 'Mobility (always)', sets: 1, reps: '10-15 min', notes: 'Hips, ankles, T-spine' },
-                    { name: 'Easy Core', sets: 1, reps: '10 min', notes: 'Dead bug, planks' }
-                ]
+                    { name: 'Mobility Flow', sets: 1, reps: '10-15 min', notes: 'Hips, ankles, T-spine focus' },
+                    { name: 'Core: Dead Bug + Bird Dog', sets: 2, reps: '10/side', notes: 'Quality over speed', core: true }
+                ],
+                cardio: {
+                    description: 'Easy recovery: 30-40 min Z2 run (3-4 mi) OR 20-30 min continuous swim OR 45-60 min easy bike',
+                    inputs: [
+                        { label: 'Run (miles)', key: 'run' },
+                        { label: 'Swim (min)', key: 'swim' },
+                        { label: 'Bike (min)', key: 'bike' }
+                    ]
+                }
             }
         };
 
@@ -721,7 +956,6 @@
         let userData = JSON.parse(localStorage.getItem('workoutTracker')) || {
             prs: {},
             workouts: {},
-            runLog: {},
             currentWeek: 1
         };
 
@@ -778,11 +1012,22 @@
             });
         }
 
+        function getPreviousWorkout(day, currentWeek) {
+            for (let w = currentWeek - 1; w >= 1; w--) {
+                if (userData.workouts[day] && userData.workouts[day][w]) {
+                    const weekData = userData.workouts[day][w];
+                    if (Object.keys(weekData.sets).length > 0) {
+                        return { week: w, data: weekData };
+                    }
+                }
+            }
+            return null;
+        }
+
         function renderWorkoutPage(day) {
             const page = document.getElementById(day);
             page.innerHTML = '';
             
-            // Week selector
             const weekSelector = document.createElement('div');
             weekSelector.className = 'week-selector';
             for (let w = 1; w <= 6; w++) {
@@ -801,7 +1046,6 @@
             
             const content = document.createElement('div');
             
-            // Progression guide
             const guideDiv = document.createElement('div');
             guideDiv.className = 'progress-guide';
             guideDiv.innerHTML = `
@@ -810,18 +1054,84 @@
             `;
             content.appendChild(guideDiv);
             
-            // Exercises
+            const burpeeDiv = document.createElement('div');
+            burpeeDiv.className = 'burpee-section';
+            
             const workout = workoutData[day];
             if (!userData.workouts[day]) userData.workouts[day] = {};
             if (!userData.workouts[day][userData.currentWeek]) {
-                userData.workouts[day][userData.currentWeek] = { sets: {}, notes: '', feel: '' };
+                userData.workouts[day][userData.currentWeek] = { 
+                    sets: {}, 
+                    cardio: {}, 
+                    notes: '', 
+                    feel: '',
+                    burpeeComplete: false,
+                    burpeeTime: ''
+                };
             }
             
             const weekData = userData.workouts[day][userData.currentWeek];
             
+            burpeeDiv.innerHTML = `
+                <div class="burpee-header">100 Burpee Challenge</div>
+                <div class="burpee-inputs">
+                    <div class="burpee-checkbox">
+                        <input type="checkbox" id="burpee-complete" ${weekData.burpeeComplete ? 'checked' : ''}>
+                        <label for="burpee-complete">Completed</label>
+                    </div>
+                    <div class="burpee-time">
+                        <input type="text" 
+                               class="burpee-time-input" 
+                               id="burpee-time" 
+                               placeholder="Time (e.g., 8:45)"
+                               value="${weekData.burpeeTime || ''}">
+                    </div>
+                </div>
+            `;
+            content.appendChild(burpeeDiv);
+            
+            if (workout.warmup) {
+                const warmupDiv = document.createElement('div');
+                warmupDiv.className = 'warmup-section';
+                warmupDiv.innerHTML = `
+                    <div class="warmup-header">Warm-up Routine</div>
+                    ${workout.warmup.map(item => `<div class="warmup-item">• ${item}</div>`).join('')}
+                `;
+                content.appendChild(warmupDiv);
+            }
+            
+            const previousWorkout = getPreviousWorkout(day, userData.currentWeek);
+            
             workout.exercises.forEach((ex, idx) => {
                 const exerciseDiv = document.createElement('div');
-                exerciseDiv.className = 'exercise';
+                exerciseDiv.className = ex.core ? 'exercise core' : 'exercise';
+                
+                let exerciseHTML = `
+                    <div class="exercise-header">${ex.name}</div>
+                    <div class="exercise-meta">${ex.sets > 1 ? ex.sets + 'x' : ''}${ex.reps} - ${ex.notes}</div>
+                `;
+                
+                if (previousWorkout && previousWorkout.data.sets) {
+                    const prevSets = [];
+                    for (let s = 1; s <= ex.sets; s++) {
+                        const key = `${idx}-${s}`;
+                        const prevValue = previousWorkout.data.sets[key];
+                        if (prevValue) {
+                            prevSets.push(prevValue);
+                        }
+                    }
+                    
+                    if (prevSets.length > 0) {
+                        exerciseHTML += `
+                            <div class="previous-workout">
+                                <div class="previous-workout-header">Week ${previousWorkout.week}:</div>
+                                <div class="previous-sets">
+                                    ${prevSets.map(s => `<span>${s}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
                 
                 let setsHTML = '';
                 for (let s = 1; s <= ex.sets; s++) {
@@ -844,16 +1154,40 @@
                     `;
                 }
                 
-                exerciseDiv.innerHTML = `
-                    <div class="exercise-header">${ex.name}</div>
-                    <div class="exercise-meta">${ex.sets > 1 ? ex.sets + 'x' : ''}${ex.reps} - ${ex.notes}</div>
-                    <div class="sets-container">${setsHTML}</div>
-                `;
-                
+                exerciseHTML += `<div class="sets-container">${setsHTML}</div>`;
+                exerciseDiv.innerHTML = exerciseHTML;
                 content.appendChild(exerciseDiv);
             });
             
-            // Notes section
+            if (workout.cardio) {
+                const cardioDiv = document.createElement('div');
+                cardioDiv.className = 'cardio-section';
+                
+                let cardioHTML = `
+                    <div class="cardio-header">Cardio</div>
+                    <div class="cardio-description">${workout.cardio.description}</div>
+                `;
+                
+                workout.cardio.inputs.forEach(cardioItem => {
+                    const value = weekData.cardio[cardioItem.key] || '';
+                    cardioHTML += `
+                        <div class="cardio-input-row">
+                            <div class="cardio-label">${cardioItem.label}</div>
+                            <input type="number" 
+                                   class="cardio-input" 
+                                   data-cardio-key="${cardioItem.key}"
+                                   value="${value}"
+                                   placeholder="0"
+                                   step="0.1"
+                                   inputmode="decimal">
+                        </div>
+                    `;
+                });
+                
+                cardioDiv.innerHTML = cardioHTML;
+                content.appendChild(cardioDiv);
+            }
+            
             const notesDiv = document.createElement('div');
             notesDiv.className = 'notes-section';
             notesDiv.innerHTML = `
@@ -863,53 +1197,6 @@
             `;
             content.appendChild(notesDiv);
             
-            // Run log for Day 6 and 7
-            if (day === 'day6' || day === 'day7') {
-                if (!userData.runLog[userData.currentWeek]) {
-                    userData.runLog[userData.currentWeek] = { day6: '', day7: '', day4: '' };
-                }
-                
-                const runDiv = document.createElement('div');
-                runDiv.className = 'run-log';
-                runDiv.innerHTML = `
-                    <h3>Weekly Run Log</h3>
-                    <div class="run-log-row">
-                        <span>Day 6 (4-5 mi):</span>
-                        <input type="number" class="run-input" id="run-day6" step="0.1" value="${userData.runLog[userData.currentWeek].day6 || ''}" placeholder="0.0" inputmode="decimal">
-                    </div>
-                    <div class="run-log-row">
-                        <span>Day 7 (3-4 mi):</span>
-                        <input type="number" class="run-input" id="run-day7" step="0.1" value="${userData.runLog[userData.currentWeek].day7 || ''}" placeholder="0.0" inputmode="decimal">
-                    </div>
-                    <div class="run-log-row">
-                        <span>Day 4 optional (2 mi):</span>
-                        <input type="number" class="run-input" id="run-day4" step="0.1" value="${userData.runLog[userData.currentWeek].day4 || ''}" placeholder="0.0" inputmode="decimal">
-                    </div>
-                    <div class="run-log-row">
-                        <span>Total Miles:</span>
-                        <strong id="total-miles">0.0</strong>
-                    </div>
-                `;
-                content.appendChild(runDiv);
-                
-                // Run log listeners
-                setTimeout(() => {
-                    ['day6', 'day7', 'day4'].forEach(d => {
-                        const input = document.getElementById(`run-${d}`);
-                        if (input) {
-                            input.addEventListener('input', () => {
-                                userData.runLog[userData.currentWeek][d] = input.value;
-                                updateTotalMiles();
-                                saveData();
-                                updateStats();
-                            });
-                        }
-                    });
-                    updateTotalMiles();
-                }, 0);
-            }
-            
-            // Save button
             const saveBtn = document.createElement('button');
             saveBtn.className = 'save-btn';
             saveBtn.textContent = 'Save Workout';
@@ -918,8 +1205,25 @@
             
             page.appendChild(content);
             
-            // Add event listeners
             setTimeout(() => {
+                const burpeeCheck = document.getElementById('burpee-complete');
+                const burpeeTimeInput = document.getElementById('burpee-time');
+                
+                if (burpeeCheck) {
+                    burpeeCheck.addEventListener('change', (e) => {
+                        weekData.burpeeComplete = e.target.checked;
+                        saveData();
+                        updateStats();
+                    });
+                }
+                
+                if (burpeeTimeInput) {
+                    burpeeTimeInput.addEventListener('input', (e) => {
+                        weekData.burpeeTime = e.target.value;
+                        saveData();
+                    });
+                }
+                
                 page.querySelectorAll('.set-input').forEach(input => {
                     input.addEventListener('input', (e) => {
                         const key = e.target.dataset.key;
@@ -948,16 +1252,16 @@
                         }
                     });
                 });
+                
+                page.querySelectorAll('.cardio-input').forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const key = e.target.dataset.cardioKey;
+                        weekData.cardio[key] = e.target.value;
+                        saveData();
+                        updateStats();
+                    });
+                });
             }, 0);
-        }
-
-        function updateTotalMiles() {
-            const week = userData.runLog[userData.currentWeek] || { day6: 0, day7: 0, day4: 0 };
-            const total = (parseFloat(week.day6) || 0) + (parseFloat(week.day7) || 0) + (parseFloat(week.day4) || 0);
-            const elem = document.getElementById('total-miles');
-            if (elem) {
-                elem.textContent = total.toFixed(1);
-            }
         }
 
         function saveWorkout(day) {
@@ -971,7 +1275,6 @@
             saveData();
             updateStats();
             
-            // Visual feedback
             const btn = event.target;
             const originalText = btn.textContent;
             btn.textContent = 'Saved!';
@@ -987,7 +1290,6 @@
         }
 
         function updateStats() {
-            // Calculate total sessions
             let totalSessions = 0;
             let weekSessions = 0;
             
@@ -1004,28 +1306,60 @@
                 });
             });
             
-            // Calculate total miles
-            let totalMiles = 0;
-            let weekMiles = 0;
+            let totalCardio = 0;
+            let weekCardio = 0;
             
-            Object.keys(userData.runLog).forEach(week => {
-                const weekData = userData.runLog[week];
-                const miles = (parseFloat(weekData.day6) || 0) + (parseFloat(weekData.day7) || 0) + (parseFloat(weekData.day4) || 0);
-                totalMiles += miles;
-                if (parseInt(week) === userData.currentWeek) {
-                    weekMiles = miles;
-                }
+            Object.keys(userData.workouts).forEach(day => {
+                Object.keys(userData.workouts[day]).forEach(week => {
+                    const weekData = userData.workouts[day][week];
+                    if (weekData.cardio) {
+                        Object.values(weekData.cardio).forEach(value => {
+                            const num = parseFloat(value) || 0;
+                            totalCardio += num;
+                            if (parseInt(week) === userData.currentWeek) {
+                                weekCardio += num;
+                            }
+                        });
+                    }
+                });
             });
             
-            // Update display
+            let totalBurpees = 0;
+            let weekBurpees = 0;
+            
+            Object.keys(userData.workouts).forEach(day => {
+                Object.keys(userData.workouts[day]).forEach(week => {
+                    const weekData = userData.workouts[day][week];
+                    if (weekData.burpeeComplete) {
+                        totalBurpees += 100;
+                        if (parseInt(week) === userData.currentWeek) {
+                            weekBurpees++;
+                        }
+                    }
+                });
+            });
+            
+            const days = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'];
+            let streakCount = 0;
+            for (let i = days.length - 1; i >= 0; i--) {
+                const day = days[i];
+                if (userData.workouts[day] && userData.workouts[day][userData.currentWeek] && userData.workouts[day][userData.currentWeek].burpeeComplete) {
+                    streakCount++;
+                } else if (streakCount > 0) {
+                    break;
+                }
+            }
+            
             document.getElementById('completedSessions').textContent = totalSessions;
-            document.getElementById('totalMiles').textContent = totalMiles.toFixed(1);
+            document.getElementById('totalCardio').textContent = totalCardio.toFixed(1);
             document.getElementById('currentWeekDisplay').textContent = userData.currentWeek;
             document.getElementById('weekSessions').textContent = `${weekSessions} / 6`;
-            document.getElementById('weekMiles').textContent = weekMiles.toFixed(1);
+            document.getElementById('weekCardio').textContent = weekCardio.toFixed(1);
+            document.getElementById('burpeeStreak').textContent = streakCount;
+            document.getElementById('totalBurpees').textContent = totalBurpees;
+            document.getElementById('weekBurpees').textContent = `${weekBurpees} / 7`;
         }
 
-        // Initialize
         updateStats();
     </script>
 </body>
